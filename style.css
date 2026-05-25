@@ -1,0 +1,613 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700;800;900&display=swap');
+/* 
+ * VARIÁVEIS CSS (Design System)
+ * Centralizamos as cores e fontes aqui para que, se precisarmos mudar 
+ * a identidade visual (ex: do azul neon pro vermelho), alteramos em um só lugar.
+ */
+:root {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Space Grotesk", sans-serif;
+  --color-brand-cyan: #00e5ff;
+  --color-brand-dark: #050505;
+  --color-brand-surface: #121414;
+  --color-brand-surface-high: #1e2020;
+}
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+a {
+    text-decoration: none;
+}
+address {
+    font-style: normal;
+}
+body {
+    background-color: var(--color-brand-dark);
+    color: #e5e7eb; /* gray-200 */
+    font-family: var(--font-sans);
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+}
+::selection {
+    background-color: var(--color-brand-cyan);
+    color: var(--color-brand-dark);
+}
+.container {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding: 0 24px;
+}
+/* Utilitários (Classes Reutilizáveis) */
+.font-display { font-family: var(--font-display); }
+.text-brand-cyan { color: var(--color-brand-cyan); }
+/* 
+ * EFEITOS NEON (Glow)
+ * Criamos o brilho usando sombras espalhadas (box-shadow para caixas e text-shadow para textos).
+ * A cor do brilho é o nosso cyan com transparência para dar o aspecto de luz radiante.
+ */
+.neon-text-glow { text-shadow: 0 0 10px rgba(0, 229, 255, 0.5); }
+/* 
+ * EFEITO GLASSMORPHISM (Efeito de Vidro)
+ * O segredo aqui é usar um fundo semi-transparente (rgba) combinado 
+ * com o 'backdrop-filter: blur()', que embaça o que estiver atrás do card.
+ */
+.glass-card {
+    background-color: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(0, 229, 255, 0.3);
+}
+/* Cabeçalho Principal (Navbar) */
+.header {
+    position: fixed;
+    top: 0;
+    width: 100%;
+    z-index: 50;
+    background-color: rgba(5, 5, 5, 0.5);
+    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+.header-inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+.logo {
+    font-size: 1.5rem;
+    font-weight: 900;
+    color: var(--color-brand-cyan);
+    font-style: italic;
+    letter-spacing: -0.05em;
+    font-family: var(--font-display);
+}
+.btn-primary {
+    background-color: var(--color-brand-cyan);
+    color: var(--color-brand-dark);
+    font-family: var(--font-display);
+    font-weight: 700;
+    padding: 8px 24px;
+    border-radius: 2px;
+    border: none;
+    cursor: pointer;
+    text-transform: uppercase;
+    font-size: 0.875rem;
+    letter-spacing: 0.025em;
+    transition: all 0.3s ease;
+}
+.btn-primary:hover {
+    box-shadow: 0 0 25px rgba(0, 229, 255, 0.5);
+}
+.btn-primary:active {
+    transform: scale(0.95);
+}
+/* Seção Hero (Apresentação Inicial) */
+.hero {
+    position: relative;
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    padding-top: 80px;
+}
+.hero-bg {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+}
+.hero-bg img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    opacity: 0.2;
+    filter: blur(2px);
+    transition: transform 10s linear;
+}
+.hero:hover .hero-bg img {
+    transform: scale(1.1);
+}
+.hero-bg-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, var(--color-brand-dark), rgba(5, 5, 5, 0.8), transparent);
+}
+.hero-content {
+    position: relative;
+    z-index: 10;
+    text-align: center;
+    padding: 0 24px;
+    max-width: 896px;
+}
+.hero-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 4px 16px;
+    border-radius: 9999px;
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    background-color: rgba(0, 229, 255, 0.05);
+    backdrop-filter: blur(12px);
+    margin-bottom: 32px;
+}
+.hero-badge-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background-color: var(--color-brand-cyan);
+    box-shadow: 0 0 15px rgba(0, 229, 255, 0.3);
+    /* Chama a animação 'pulse' que criamos abaixo, fazendo ela durar 2s e repetir infinitamente */
+    animation: pulse 2s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+/* Keyframes definem as etapas da animação. Começa visível (1), no meio fica meio apagado (0.5), e volta visível. */
+@keyframes pulse {
+    0%, 100% { opacity: 1; }
+    50% { opacity: .5; }
+}
+.hero-badge-text {
+    font-family: var(--font-display);
+    font-size: 0.625rem;
+    font-weight: 700;
+    color: var(--color-brand-cyan);
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+.hero-title {
+    font-family: var(--font-display);
+    font-size: 3rem;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    letter-spacing: -0.025em;
+    line-height: 1;
+    font-style: italic;
+}
+@media (min-width: 768px) {
+    .hero-title { font-size: 4.5rem; }
+}
+.hero-desc {
+    font-size: 1.125rem;
+    color: #9ca3af;
+    max-width: 672px;
+    margin: 0 auto;
+    line-height: 1.625;
+}
+/* Espaçamentos e Títulos Padrão das Seções */
+.section {
+    padding: 96px 24px;
+}
+.section-header {
+    text-align: center;
+    margin-bottom: 48px;
+}
+.section-title {
+    font-family: var(--font-display);
+    font-size: 1.875rem;
+    font-weight: 700;
+    color: var(--color-brand-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 12px;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+}
+@media (min-width: 768px) {
+    .section-title { font-size: 2.25rem; }
+}
+.section-divider {
+    width: 96px;
+    height: 4px;
+    background: linear-gradient(to right, transparent, var(--color-brand-cyan), transparent);
+    margin: 0 auto;
+}
+.section-subtitle {
+    margin-top: 16px;
+    color: #9ca3af;
+    max-width: 672px;
+    margin-left: auto;
+    margin-right: auto;
+    font-style: italic;
+}
+/* Grid das Arenas (Cards Principais) */
+.grid-2 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 32px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+@media (min-width: 768px) {
+    .grid-2 { grid-template-columns: repeat(2, 1fr); }
+}
+.arena-card {
+    padding: 40px;
+    position: relative;
+    transition: all 0.3s ease;
+    overflow: hidden;
+    border-radius: 4px;
+}
+.arena-card:hover {
+    background-color: rgba(0, 229, 255, 0.05);
+}
+.arena-icon {
+    position: absolute;
+    top: -16px;
+    right: -16px;
+    color: rgba(0, 229, 255, 0.1);
+    transition: color 0.3s ease;
+}
+.arena-icon svg {
+    width: 120px;
+    height: 120px;
+}
+.arena-card:hover .arena-icon {
+    color: rgba(0, 229, 255, 0.2);
+}
+.arena-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 8px;
+    position: relative;
+    z-index: 2;
+}
+.arena-tag {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-brand-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+    opacity: 0.7;
+    font-style: italic;
+    position: relative;
+    z-index: 2;
+}
+.arena-desc {
+    color: #9ca3af;
+    line-height: 1.625;
+    border-left: 2px solid rgba(0, 229, 255, 0.3);
+    padding-left: 16px;
+    position: relative;
+    z-index: 2;
+}
+/* Grid do Arsenal Tecnológico */
+.bg-surface {
+    background-color: var(--color-brand-surface);
+    border-top: 1px solid rgba(0, 229, 255, 0.1);
+    border-bottom: 1px solid rgba(0, 229, 255, 0.1);
+}
+.grid-3 {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 1280px;
+    margin: 0 auto;
+}
+@media (min-width: 768px) {
+    .grid-3 { grid-template-columns: repeat(3, 1fr); }
+}
+.arsenal-card {
+    background-color: rgba(30, 32, 32, 0.5);
+    padding: 32px;
+    border-radius: 2px;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    transition: all 0.3s ease;
+}
+.arsenal-card:hover {
+    border-color: var(--color-brand-cyan);
+}
+.arsenal-icon {
+    color: var(--color-brand-cyan);
+    transition: transform 0.3s ease;
+}
+.arsenal-card:hover .arsenal-icon {
+    transform: scale(1.1);
+}
+.arsenal-title {
+    font-family: var(--font-display);
+    font-size: 1.125rem;
+    font-weight: 700;
+    color: white;
+    text-transform: uppercase;
+}
+.arsenal-meta {
+    font-family: var(--font-display);
+    font-size: 0.625rem;
+    color: rgba(0, 229, 255, 0.6);
+    font-weight: 700;
+    letter-spacing: 0.2em;
+}
+/* Seção Especial: Frag Night */
+.frag-section {
+    position: relative;
+    overflow: hidden;
+}
+.frag-bg {
+    position: absolute;
+    inset: 0;
+    background: radial-gradient(circle at center, rgba(0,229,255,0.05) 0%, transparent 70%);
+}
+.frag-container {
+    max-width: 1280px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 64px;
+    position: relative;
+    z-index: 10;
+}
+@media (min-width: 1024px) {
+    .frag-container { flex-direction: row; }
+}
+.frag-info {
+    flex: 1;
+}
+.frag-badge {
+    font-family: var(--font-display);
+    font-size: 0.75rem;
+    font-weight: 700;
+    color: var(--color-brand-cyan);
+    background-color: rgba(0, 229, 255, 0.1);
+    border: 1px solid var(--color-brand-cyan);
+    padding: 4px 12px;
+    margin-bottom: 24px;
+    display: inline-block;
+    font-style: italic;
+}
+.frag-title {
+    font-family: var(--font-display);
+    font-size: 2.25rem;
+    font-weight: 900;
+    color: white;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    font-style: italic;
+    text-shadow: 0 0 10px rgba(0, 229, 255, 0.5);
+    line-height: 1.1;
+}
+@media (min-width: 768px) {
+    .frag-title { font-size: 3.75rem; }
+}
+.frag-desc {
+    color: #9ca3af;
+    font-size: 1.125rem;
+    line-height: 1.625;
+    margin-bottom: 32px;
+    max-width: 600px;
+}
+.frag-pass {
+    flex: 1;
+    width: 100%;
+}
+@media (min-width: 1024px) {
+    .frag-pass { width: auto; }
+}
+.pass-card {
+    padding: 48px;
+    border-radius: 2px;
+    border: 2px solid rgba(0, 229, 255, 0.5);
+    box-shadow: 0 0 50px rgba(0, 229, 255, 0.1);
+}
+.pass-title {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--color-brand-cyan);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    font-style: italic;
+}
+.pass-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+.pass-item {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    color: white;
+    font-weight: 500;
+}
+.btn-white {
+    width: 100%;
+    margin-top: 48px;
+    background-color: white;
+    color: var(--color-brand-dark);
+    padding: 16px;
+    font-family: var(--font-display);
+    font-weight: 900;
+    text-transform: uppercase;
+    letter-spacing: -0.05em;
+    font-size: 1.25rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+.btn-white:hover {
+    background-color: var(--color-brand-cyan);
+}
+/* Hub de Conveniência (Impressões) */
+.hub-card {
+    max-width: 672px;
+    margin: 0 auto;
+    padding: 32px;
+    display: flex;
+    align-items: center;
+    gap: 32px;
+    transition: transform 0.3s ease;
+    cursor: pointer;
+    border-radius: 2px;
+}
+.hub-card:hover {
+    transform: scale(1.02);
+}
+@media (max-width: 768px) {
+    .hub-card {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+.hub-icon {
+    padding: 16px;
+    background-color: rgba(0, 229, 255, 0.1);
+    border-radius: 2px;
+    border: 1px solid rgba(0, 229, 255, 0.3);
+    color: var(--color-brand-cyan);
+}
+.hub-info h4 {
+    font-family: var(--font-display);
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: white;
+    margin-bottom: 4px;
+}
+.hub-info p {
+    color: #9ca3af;
+}
+.hub-arrow {
+    margin-left: auto;
+    color: var(--color-brand-cyan);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+.hub-card:hover .hub-arrow {
+    opacity: 1;
+}
+/* Rodapé (Informações Locais e Links) */
+.footer {
+    background-color: #050505;
+    border-top: 1px solid rgba(0, 229, 255, 0.2);
+    padding: 80px 24px 40px;
+}
+.footer-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 64px;
+    max-width: 1280px;
+    margin: 0 auto 80px;
+}
+@media (min-width: 768px) {
+    .footer-grid { grid-template-columns: repeat(3, 1fr); }
+}
+.footer-logo {
+    font-size: 1.875rem;
+    font-weight: 900;
+    color: var(--color-brand-cyan);
+    font-style: italic;
+    letter-spacing: -0.05em;
+    font-family: var(--font-display);
+    margin-bottom: 24px;
+}
+.footer-col h4 {
+    font-family: var(--font-display);
+    font-weight: 700;
+    color: var(--color-brand-cyan);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    margin-bottom: 24px;
+}
+.footer-list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    font-size: 0.875rem;
+    color: #9ca3af;
+}
+.footer-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+}
+.footer-item svg {
+    color: var(--color-brand-cyan);
+    flex-shrink: 0;
+}
+.footer-bottom {
+    max-width: 1280px;
+    margin: 0 auto;
+    padding-top: 32px;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 16px;
+    font-family: var(--font-display);
+    font-size: 0.625rem;
+    color: #4b5563;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+}
+@media (min-width: 768px) {
+    .footer-bottom {
+        flex-direction: row;
+        justify-content: space-between;
+    }
+}
+.footer-links {
+    display: flex;
+    gap: 32px;
+}
+.footer-links a {
+    transition: color 0.3s ease;
+}
+.footer-links a:hover {
+    color: var(--color-brand-cyan);
+}
+/* 
+ * ANIMAÇÕES DE SCROLL (Casadas com o script.js)
+ * Os elementos começam invisíveis (opacity: 0) e 30px para baixo (translateY).
+ * Quando o JavaScript detectar que entraram na tela, adiciona a classe '.visible', 
+ * fazendo eles voltarem para a posição original de forma suave (transition).
+ */
+.animate-on-scroll {
+    opacity: 0;
+    transform: translateY(30px);
+    transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.animate-on-scroll.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+/* Utilitários para criar atrasos, gerando aquele efeito em que um card entra logo após o outro (cascata) */
+.delay-100 { transition-delay: 100ms; }
+.delay-200 { transition-delay: 200ms; }
+.delay-300 { transition-delay: 300ms; }
