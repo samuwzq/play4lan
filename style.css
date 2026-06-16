@@ -252,7 +252,7 @@ body {
     .grid-2 { grid-template-columns: repeat(2, 1fr); }
 }
 .arena-card {
-    padding: 40px;
+    padding: 0;
     position: relative;
     transition: all 0.3s ease;
     overflow: hidden;
@@ -263,19 +263,44 @@ body {
 .arena-card:hover {
     background-color: rgba(0, 229, 255, 0.05);
 }
+.arena-image-container {
+    width: 100%;
+    height: 250px;
+    overflow: hidden;
+    position: relative;
+    border-bottom: 1px solid rgba(0, 229, 255, 0.2);
+}
+.arena-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+.arena-card:hover .arena-image {
+    transform: scale(1.05);
+}
+.arena-content {
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    position: relative;
+}
 .arena-icon {
     position: absolute;
-    top: -16px;
-    right: -16px;
-    color: rgba(0, 229, 255, 0.1);
+    top: 16px;
+    right: 16px;
+    color: rgba(0, 229, 255, 0.08);
     transition: color 0.3s ease;
+    pointer-events: none;
 }
 .arena-icon svg {
-    width: 120px;
-    height: 120px;
+    width: 80px;
+    height: 80px;
 }
 .arena-card:hover .arena-icon {
-    color: rgba(0, 229, 255, 0.2);
+    color: rgba(0, 229, 255, 0.15);
 }
 .arena-title {
     font-family: var(--font-display);
